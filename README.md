@@ -10,10 +10,15 @@ File names must accord to
 which lead to the structure
 
 └── context
+
     └── folder1
+
         └── folder2
+
             └── folder3
+
                 └── 2021
+                
                     └── @context=folder1=folder2=folder3#(tag1)#(tag2).txt
 
 tag is needed https://github.com/jdberry/tag
