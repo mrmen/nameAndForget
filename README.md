@@ -13,7 +13,7 @@ which lead to the structure
         └── folder1
             └── folder2
                 └── folder3
-                    └── 2021
+                    └── «year»
                         └── @context=folder1=folder2=folder3#(tag1)#(tag2).txt
 
 tag is needed https://github.com/jdberry/tag
