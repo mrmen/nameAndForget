@@ -1,6 +1,31 @@
 #!/bin/bash
 #OIFS="${IFS}"
-#IFS="\n"
+#IFS='\n'
+# file names must accord to 
+#     @job=3eme=geometry=ds=fichier#(thales)#(geometry).txt
+#
+# which lead to the structure
+# 
+# .
+# ├── @job=3eme=geometry=ds=fichier#(triangle)#(tableur).txt
+# └── job
+#     └── 3eme
+#         └── geometry
+#             └── ds
+#                 └── fichier
+#                     └── 2021
+#                         └── @job=3eme=geometry=ds=fichier#(triangle)#(tableur).txt
+#
+#
+# and the tags tringale and tableur
+#
+#
+# tag is needed https://github.com/jdberry/tag
+#
+# the final name is the current name of the file 
+# the goal is to have access to path within name and to tags
+#
+#
 
 function check(){
     if [[ $1 = $2 ]];then
@@ -12,13 +37,14 @@ function check(){
 
 function debug(){
     return 0
+    #echo $1
 }
 
 function debugFalse(){
     return 0
 }
 
-cd $1
+cd ~/Desktop/burn#$1
 for file in *
 do
     if [ -d $file ]
@@ -38,7 +64,7 @@ do
     debug "    $context"
     
     debug ":: getting folders"
-    folders=$(echo $file | sed 's/@[^=]*\([^\+(]*\).*/\1/g; s/=/\//g')
+folders=$(echo $file | sed 's/@[^=]*\([^\+(#]*\).*/\1/g; s/=/\//g')
     # verify if folders exists really
     if $(check "${file}" "${folders}")
     then 
@@ -64,7 +90,8 @@ do
     
     # tag part
     debug ":: processing with tags"
-    taglist=$(echo $file | sed 's/[^(]*\(([^#]*)\)#.*/\1/g')
+    taglist=$(echo $file | sed 's/[^#\]*\(#.*\)/\1/g;s/#//g')
+    debug $taglist
     while [[ $taglist == *"("* ]]
     do
         currentTag=$(echo $taglist | sed 's/(\([^)]*\)).*/\1/g')
@@ -72,8 +99,9 @@ do
         tag -a $currentTag $file
         taglist=$(echo $taglist | sed 's/([^)]*)\(.*\)/\1/g')
     done
+    cp $file $newpath
 done
 
-cd -
+#cd -
 
 #IFS=$OIFS
